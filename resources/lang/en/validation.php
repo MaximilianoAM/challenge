@@ -130,8 +130,10 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'type' => [
+            \App\Rules\MaximumUserAccountsRule::class => 'The selected user already has the selected account type',
+            \App\Rules\ValidCnpjRule::class => 'Invalid CNPJ',
+            \App\Rules\ValidCpfRule::class => 'Invalid CPF',
         ],
     ],
 

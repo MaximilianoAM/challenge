@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Transaction;
+use App\Observers\TransactionObserver;
+use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +16,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('failure-responses', function ($app) {
+            return new Repository(
+                $app->make('files')
+                    ->getRequire(resource_path('/responses/failure-responses.php'))
+            );
+        });
+
+        $this->app->singleton('success-responses', function ($app) {
+            return new Repository(
+                $app->make('files')
+                    ->getRequire(resource_path('/responses/success-responses.php'))
+            );
+        });
     }
 
     /**
@@ -23,6 +38,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Transaction::observe(new TransactionObserver());
     }
 }
